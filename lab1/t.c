@@ -19,7 +19,7 @@
 
 */
 
-/*[timestart]*/
+/*[timestart], copy*/
 #include <sys/times.h>
 #include <unistd.h>
 #include <stdio.h>

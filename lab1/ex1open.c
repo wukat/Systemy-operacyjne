@@ -5,7 +5,8 @@
 #include <errno.h>
 #include <string.h>
 #include "t.h"
- 
+
+/*modified by wukat*/ 
 #define BUFSIZE 1024
  
 int main (int argc, char **argv) {
@@ -22,17 +23,17 @@ int main (int argc, char **argv) {
             printf("%s: Przeczytano %d znakow z pliku %s: \"%s\"\n",
 	    argv[0], c, n1, b);
         }
-	else {
-	    close(f1);
-	    printf("%s \n", strerror(errno));
+		else {
+	    	close(f1);
+	    	printf("%s \n", strerror(errno));
             exit(EXIT_FAILURE);
-        }
-    close(f1);
-    timestop("koniec");
+      	}
+    	close(f1);
+    	timestop("koniec");
     } else {
-	printf("%s \n", strerror(errno));
+		printf("%s \n", strerror(errno));
         timestop("błąd \n");
-	exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
     }
     return(0);
 }

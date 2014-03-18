@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#modified by wukat
 echo "#include <stdio.h>"
 echo "#include <unistd.h>"
 echo "#include <limits.h>"
