@@ -9,7 +9,7 @@
  * modified by WTA
  */
  
-/*[copy-with-bug]*/
+/*copy*/
 /* modified by wukat*/
  
 #include <fcntl.h>
@@ -23,7 +23,7 @@
  
 #define BUFSIZE 512
  
-void copy(char *from, char *to)  /* has a bug ??*/
+void copy(char *from, char *to)
 {
 	int fromfd = -1, tofd = -1;
 	ssize_t nread;

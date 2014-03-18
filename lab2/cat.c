@@ -38,9 +38,9 @@ void useCat(char * fileFrom, char * option) {
 		}
 		else {
 			if (errno == ENOENT)
-				printf("Plik nie istnieje");
+				printf("Plik %s nie istnieje\n", fileFrom);
 			else if (errno == EACCES)
-				printf("Brak dostępu do pliku");
+				printf("Brak dostępu do pliku %s\n", fileFrom);
 		}
 	}
 	else {
