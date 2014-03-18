@@ -22,28 +22,35 @@
  
 #define BUFSIZE 512
  
-void copy(char *from, char *to)  /* has a bug */
+void copy(char *from, char *to)  /* has a bug ??*/
 {
 	int fromfd = -1, tofd = -1;
 	ssize_t nread;
+	ssize_t nwrite;
 	char buf[BUFSIZE];
  
 	if ((fromfd = open(from, O_RDONLY)) != -1) {
 		if ((tofd = open(to, O_WRONLY | O_CREAT | O_TRUNC,
 				S_IRUSR | S_IWUSR)) != -1) {
 			while ((nread = read(fromfd, buf, sizeof(buf))) > 0)
-	    		write(tofd, buf, nread);	
- 
-        	close(fromfd);}
+	    		if ((nwrite = write(tofd, buf, nread)) == -1) {
+	    			perror("Błąd w zapisie");
+	    			break;
+	    		}
+	    	if (nread == -1) {
+	    		perror("Błąd w czytaniu pliku");
+	    	}
+        	close(fromfd);
+    		}
         	else {
         		if (errno = ENOENT)
 					printf("Plik drugi nie istnieje");	
 				else if (errno = EACCES)
 					printf("Brak dostępu do drugiego pliku");
-		}
+			}
 		close(tofd);
 	}
-	else{
+	else {
 		if (errno = ENOENT)
 			printf("Plik pierwszy nie istnieje");
 		else if (errno = EACCES)
