@@ -10,12 +10,15 @@
  */
  
 /*[copy-with-bug]*/
-/* modified by wukat
- no bug */
+/* modified by wukat*/
  
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
  
 #define BUFSIZE 512
  
@@ -25,14 +28,27 @@ void copy(char *from, char *to)  /* has a bug */
 	ssize_t nread;
 	char buf[BUFSIZE];
  
-	fromfd = open(from, O_RDONLY);
-	tofd = open(to, O_WRONLY | O_CREAT | O_TRUNC,
-				S_IRUSR | S_IWUSR);
-	while ((nread = read(fromfd, buf, sizeof(buf))) > 0)
-	    write(tofd, buf, nread);	
+	if ((fromfd = open(from, O_RDONLY)) != -1) {
+		if ((tofd = open(to, O_WRONLY | O_CREAT | O_TRUNC,
+				S_IRUSR | S_IWUSR)) != -1) {
+			while ((nread = read(fromfd, buf, sizeof(buf))) > 0)
+	    		write(tofd, buf, nread);	
  
-        close(fromfd);
-	close(tofd);
+        	close(fromfd);}
+        	else {
+        		if (errno = ENOENT)
+					printf("Plik drugi nie istnieje");	
+				else if (errno = EACCES)
+					printf("Brak dostępu do drugiego pliku");
+		}
+		close(tofd);
+	}
+	else{
+		if (errno = ENOENT)
+			printf("Plik pierwszy nie istnieje");
+		else if (errno = EACCES)
+			printf("Brak dostępu do pierwszego pliku");
+	}
 	return;
 }
  
