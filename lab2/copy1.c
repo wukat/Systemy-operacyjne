@@ -43,17 +43,17 @@ void copy(char *from, char *to)  /* has a bug ??*/
         	close(fromfd);
     		}
         	else {
-        		if (errno = ENOENT)
+        		if (errno == ENOENT)
 					printf("Plik drugi nie istnieje");	
-				else if (errno = EACCES)
+				else if (errno == EACCES)
 					printf("Brak dostępu do drugiego pliku");
 			}
 		close(tofd);
 	}
 	else {
-		if (errno = ENOENT)
+		if (errno == ENOENT)
 			printf("Plik pierwszy nie istnieje");
-		else if (errno = EACCES)
+		else if (errno == EACCES)
 			printf("Brak dostępu do pierwszego pliku");
 	}
 	return;
