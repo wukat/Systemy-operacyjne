@@ -18,6 +18,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "writeall.h"
 
  
 #define BUFSIZE 512
@@ -33,7 +34,7 @@ void copy(char *from, char *to)  /* has a bug ??*/
 		if ((tofd = open(to, O_WRONLY | O_CREAT | O_TRUNC,
 				S_IRUSR | S_IWUSR)) != -1) {
 			while ((nread = read(fromfd, buf, sizeof(buf))) > 0)
-	    		if ((nwrite = write(tofd, buf, nread)) == -1) {
+	    		if ((nwrite = writeall(tofd, buf, nread)) == -1) {
 	    			perror("Błąd w zapisie");
 	    			break;
 	    		}
