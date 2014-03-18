@@ -2,7 +2,6 @@
  * author wukat
  * cat function
 */
-
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -56,7 +55,7 @@ int main(int argc, char **argv) {
 	else {
 		int i = 1;
 		for (i = 1; i < argc; i++) {
-			useCat(argv[i], NULL);
+			useCat(argv[i], NULL); /*place for option*/
 		}
 	}
 	

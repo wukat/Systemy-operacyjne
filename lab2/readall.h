@@ -11,7 +11,7 @@ ssize_t readall(int fd, const void *buf, size_t nbyte) {
 			else
 				return -1;
 		}
-		if (n == 0) /* case when EOF was read*/ {
+		if (n == 0) /*case when EOF was read*/ {
 			return nread;
 		}
 		nread += n;

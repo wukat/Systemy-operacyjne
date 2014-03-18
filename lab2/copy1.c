@@ -34,18 +34,18 @@ void copy(char *from, char *to)  /* has a bug ??*/
 		if ((tofd = open(to, O_WRONLY | O_CREAT | O_TRUNC,
 				S_IRUSR | S_IWUSR)) != -1) {
 			while ((nread = read(fromfd, buf, sizeof(buf))) > 0) {
-	    		if ((nwrite = writeall(tofd, buf, nread)) == -1) {
-	    			perror("Błąd w zapisie");
-	    			break;
+	    			if ((nwrite = writeall(tofd, buf, nread)) == -1) {
+	    				perror("Błąd w zapisie");
+	    				return;
+	    			}
 	    		}
-	    	}
-	    	if (nread == -1) {
-	    		perror("Błąd w czytaniu pliku");
-	    	}
-        	close(fromfd);
-    	}
-        else {
-        	if (errno == ENOENT)
+	    		if (nread == -1) {
+	    			perror("Błąd w czytaniu pliku");
+	    		}
+        		close(fromfd);
+    		}
+        	else {
+        		if (errno == ENOENT)
 				printf("Plik drugi nie istnieje");	
 			else if (errno == EACCES)
 				printf("Brak dostępu do drugiego pliku");
@@ -67,5 +67,6 @@ int main(int argc, char **argv){
 		return 1;
 	}
 	copy(argv[1], argv[2]);
+
 	return 0;
 }
