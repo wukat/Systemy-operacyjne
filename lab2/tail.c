@@ -13,8 +13,11 @@
 int mkostemp(char *template, int flags);
 
 /* use './tail -5 path' to see 5 last lines of file (default 10) */
-/* without any file given, uses stdin */
-int getNumber(char * str) { /* from string like -5 makes integer 5*/
+/* without any file given, uses stdout */
+
+
+/* example: from string like -5 makes integer 5*/
+int getNumber(char * str) { 
 	int size = strlen(str);
 	int i = 0;
 	int result = 0;
@@ -30,7 +33,7 @@ int getNumber(char * str) { /* from string like -5 makes integer 5*/
 	return result;
 }
 
-/** creates tmp file for stdin */
+/** creates tmp file for stdout (user input) */
 int createTempForUserInput() {
 	char fileNameBuff[15];
 	char s[BUFSIZE];
@@ -49,6 +52,8 @@ int createTempForUserInput() {
 	return fdTemp;
 }
 
+/* reads and writes to stdout line lines for the bottom, if name specified, writes before output*/
+/* for stdout creates temporary file */
 void tail(int fd, int line, char * name) {
 	char s[BUFSIZE], c;
     int fdTemp = -1, nread = -1;
@@ -97,6 +102,7 @@ void tail(int fd, int line, char * name) {
 
 /* many - if there were many input files; 
 lines - if user wanted not default 10 */
+/* open files, check options/posibilities, invokes tail in a proper way*/
 void useTail(char * fileFrom, char * lines, int many) { 
 	int fromfd = -1;
 	if ((fromfd = open(fileFrom, O_RDONLY)) != -1) {

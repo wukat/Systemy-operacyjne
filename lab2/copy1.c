@@ -1,5 +1,4 @@
 /*author wukat*/
-/* uses copy1.h and writeall.h, copies */
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
