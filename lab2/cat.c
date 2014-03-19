@@ -22,10 +22,10 @@ void cat(int fdFrom, char * option) {
 	while ((nread = read(fdFrom, buf, sizeof(buf))) > 0) {
 		if (number)
 			fprintf(stdout, "%d. ", number++);
-   		if ((nwrite = writeall(1, buf, nread)) == -1) {
+   		if ((nwrite = writeall(STDOUT_FILENO, buf, nread)) == -1) {
     			perror("Błąd w zapisie");
     			return;
-    		}
+    	}
 	}
 }
 
