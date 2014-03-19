@@ -9,6 +9,7 @@
 #include "readall.h"
 #include "writeall.h"
 
+#define BUFSIZE 512
 int mkostemp(char *template, int flags);
 
 /* use './tail -5 path' to see 5 last lines of file (default 10) */
@@ -19,17 +20,22 @@ int getNumber(char * str) { /* from string like -5 makes integer 5*/
 	int result = 0;
 	for (i = 1; i < size; i++) {
 		result *= 10;
-		result += str[i] - '0';
+		if (str[i] >= '0' && str[i] <= '9')
+			result += str[i] - '0';
+		else {
+			printf("Option %s unknown", str);
+			return 10;
+		}
 	}
 	return result;
 }
 
 /** creates tmp file for stdin */
 int createTempForUserInput() {
-	char fileNameBuff[11];
-	char s[2048];
+	char fileNameBuff[15];
+	char s[BUFSIZE];
 	int nread = -1, nwrite = -1, fdTemp = -1;
-	strncpy(fileNameBuff,"/tmp/tailXXXXXX",21);
+	strncpy(fileNameBuff,"/tmp/tailXXXXXX",15);
     if ((fdTemp = mkostemp(fileNameBuff, O_APPEND)) > 1) {
     	while ((nread = read(STDIN_FILENO, s, sizeof(s))) > 0) {
    			if ((nwrite = writeall(fdTemp, s, nread)) == -1) {
@@ -44,11 +50,12 @@ int createTempForUserInput() {
 }
 
 void tail(int fd, int line, char * name) {
-	char s[2048], c;
-    int i, fdTemp = -1;
+	char s[BUFSIZE], c;
+    int fdTemp = -1, nread = -1;
     off_t where;
+    char* beg = "\n\n==> ";
+    char* end = " <==\n\n";
     
-     
     if (fd == STDOUT_FILENO) { /* saves in temporary file user's input*/
 		if ((fdTemp = createTempForUserInput()) <= 1)
 			return; 
@@ -56,19 +63,13 @@ void tail(int fd, int line, char * name) {
 			fd = fdTemp; /*change fd to temp file*/
     }
     where = lseek(fd, 0, SEEK_END);
-    i = sizeof(s) - 1;
-    s[i] = '\0';
+    line--;
     do {
 		switch (pread(fd, &c, 1, where)) {
     	case 1:
     		if (c == '\n') {
     			line--;
     		}
-    		if (i <= 0) {
-    			errno = E2BIG;
-    			/* handle the error */
-    		}
-    		s[--i] = c;
     		break;
     	case -1:
     		/* handle the error */
@@ -77,13 +78,16 @@ void tail(int fd, int line, char * name) {
     		errno = 0;
     		/* handle the error */
     	}
-    } while (where-- > 0 && line >= 0 && i > 0);
-    if (name != NULL) 
-    	printf("==> %s <==", name);
-    if (i == 0) { /* if buffer is full, inform*/
-    	printf("Bufer pełny - w trakcie %d. linii \n", 9-line);
+    } while (where-- > 0 && line >= 0);
+    if (name != NULL) {
+    	writeall(STDOUT_FILENO, beg, strlen(beg));
+    	writeall(STDOUT_FILENO, name, strlen(name));
+    	writeall(STDOUT_FILENO, end, strlen(end));
     }
-   	printf("%s", &s[i]);
+    lseek(fd, ++where, SEEK_SET);
+    while ((nread = readall(fd, s, BUFSIZE)) > 0) {
+    	writeall(STDOUT_FILENO, s, nread);
+    }
     close(fd);
     if (fdTemp != -1) {
     	close(fdTemp);
