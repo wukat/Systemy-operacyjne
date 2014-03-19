@@ -24,22 +24,36 @@ int getNumber(char * str) { /* from string like -5 makes integer 5*/
 	return result;
 }
 
-void tail(int fd, int line, char * name) {
-	char s[2048], c;
-    int i, nread = -1, nwrite = -1, fdTemp = -1;
-    off_t where;
-    char fileNameBuff[32];
-     
-    if (fd == STDOUT_FILENO) { /* save in temporary file user's input*/
-    	strncpy(fileNameBuff,"/tmp/myTmpFile-XXXXXX",21);
-    	fdTemp = mkostemp(fileNameBuff, O_APPEND);
-    	while ((nread = read(fd, s, sizeof(s))) > 0) {
+/** creates tmp file for stdin */
+int createTempForUserInput() {
+	char fileNameBuff[11];
+	char s[2048];
+	int nread = -1, nwrite = -1, fdTemp = -1;
+	strncpy(fileNameBuff,"/tmp/tailXXXXXX",21);
+    if ((fdTemp = mkostemp(fileNameBuff, O_APPEND)) > 1) {
+    	while ((nread = read(STDIN_FILENO, s, sizeof(s))) > 0) {
    			if ((nwrite = writeall(fdTemp, s, nread)) == -1) {
     			perror("Błąd w zapisie");
-    			return;
+    			return -1;
     		}
 		}
-		fd = fdTemp; /*change fd to temp file*/
+	} else {
+		perror("Nie udało się utworzyć pliku tymczasowego");
+	}
+	return fdTemp;
+}
+
+void tail(int fd, int line, char * name) {
+	char s[2048], c;
+    int i, fdTemp = -1;
+    off_t where;
+    
+     
+    if (fd == STDOUT_FILENO) { /* saves in temporary file user's input*/
+		if ((fdTemp = createTempForUserInput()) <= 1)
+			return; 
+		else 
+			fd = fdTemp; /*change fd to temp file*/
     }
     where = lseek(fd, 0, SEEK_END);
     i = sizeof(s) - 1;
@@ -71,6 +85,9 @@ void tail(int fd, int line, char * name) {
     }
    	printf("%s", &s[i]);
     close(fd);
+    if (fdTemp != -1) {
+    	close(fdTemp);
+    }
     return;
 }
 
