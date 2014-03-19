@@ -138,9 +138,7 @@ int main(int argc, char **argv) {
 	} else {
 		int i = 2;
 		if (argv[1][0] == '-') {
-			for (i = 2; i < argc; i++) {
-				useTail(argv[i], argv[1], 1);
-			}
+			printf("Unsupported option with many files");
 		}
 		else {
 			for (i = 1; i < argc; i++) {
