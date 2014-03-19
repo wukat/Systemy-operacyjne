@@ -7,7 +7,7 @@ gcc -Wall -ansi -pedantic copy3.c t.c -o copy3
 for i in 1 512 1024 1100 ; do
 	echo "#define BUFSIZE $i" > special.h
 	echo "Buffer set size to $i"
-	gcc -Wall -ansi -pedantic checkTimes.c t.c -o copy2
+	gcc -Wall -ansi -pedantic copy2.c t.c -o copy2
 	./copy2 bigfile second
 done
 
