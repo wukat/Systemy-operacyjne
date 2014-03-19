@@ -54,7 +54,7 @@ void tail(int fd, int line, char * name) {
     int fdTemp = -1, nread = -1;
     off_t where;
     char* beg = "\n\n==> ";
-    char* end = " <==\n\n";
+    char* end = " <==\n";
     
     if (fd == STDOUT_FILENO) { /* saves in temporary file user's input*/
 		if ((fdTemp = createTempForUserInput()) <= 1)
