@@ -22,3 +22,5 @@ gcc -Wall -ansi -pedantic checkTimes.c t.c -o copy2
 ./copy2 bigfile second4.second
 rm *.second
 rm bigfile
+rm copy3 
+rm copy2
