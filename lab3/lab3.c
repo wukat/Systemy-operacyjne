@@ -16,6 +16,8 @@
 
 /* -------------------------------------------------------------------------------- */
 
+int aio_read(struct aiocb *aiocbp);
+int aio_error(const struct aiocb *aiocbp);
 static void print_type(struct stat *sb);
 static void print_ino(const struct stat *sb);
 static void print_perms(const struct stat *sb, const char * path);
