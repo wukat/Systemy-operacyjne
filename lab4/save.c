@@ -20,14 +20,17 @@ int main(int argc, char* argv[]) {
   char buf[BUFSIZE] = { 'a', 'a', 'a', 'a', 'a' };
   char* filename;
   if (argc == 1) {
-    printf("Use program with an argument - file path.");
+    printf("Use program with a parameter - file path.");
     return 1;
   }
   if (argc == 2) {
     filename = argv[1];
-  } else {
+  } else if (argc == 3) {
     filename = argv[2];
     s = atoi(argv[1]);
+  } else {
+    printf("Too many parameters - use max two");
+    return 2;
   }
 
   if ((s < smin) || (s > smax))
