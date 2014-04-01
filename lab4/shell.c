@@ -6,6 +6,10 @@ int main(void) {
 	int res;
 	char cmd[MAXCMD];
 	struct cmdlist cmds;
+	struct rlimit limit;
+	getrlimit(RLIMIT_FSIZE, &limit);
+	limit.rlim_cur = 50;
+	setrlimit(RLIMIT_FSIZE, &limit);
 
 	/* setting up the initial values of the structure  */
 	/* this should be done every time when new object is created */
