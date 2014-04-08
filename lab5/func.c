@@ -1,3 +1,4 @@
+/* modified by wukat */
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,8 +21,7 @@ pthread_mutex_t mutex;
 void* calc(void* arg); // Funkcja rozpoczecia
 // ----------------------------------------------------------
  
-int main (int argc, char *argv[]){
- 
+int main (int argc, char *argv[]) {
      long i, sum = 0, rc = 0;
      void* status;
      long* a = (long*) malloc (NUM*LENGTH*sizeof(long));     
@@ -44,9 +44,9 @@ int main (int argc, char *argv[]){
      pthread_attr_init(&attr);
      pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
  
-     for(i=0;i<NUM;i++){
+     for(i=0;i<NUM;i++) {
 	rc = pthread_create(&threads[i], NULL, calc, (void*) i);
-	if (rc){
+	if (rc) {
           printf("Return code: %ld\n", rc);
           exit(-1);
         }
@@ -71,8 +71,7 @@ int main (int argc, char *argv[]){
 }
 // ----------------------------------------------------------
  
-void* calc(void* arg)
-{
+void* calc(void* arg) {
      long* x = data.a;
      long mysum = 0;
      int i;
