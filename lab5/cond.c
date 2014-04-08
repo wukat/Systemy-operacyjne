@@ -1,3 +1,4 @@
+/* modified by wukat */
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,8 +14,7 @@ void* increment(void*);
 void* printinfo(void*);
 // ----------------------------------------------------------
  
-int main(){
- 
+int main() {
      pthread_t t1, t2, t3;
      pthread_attr_t attr;
  
@@ -44,21 +44,21 @@ int main(){
 // ----------------------------------------------------------
  
 void* increment(void* arg) {
-     pthread_mutex_lock(&mutex);
      while(globalvariable < MAXVAL) {
-       
-       globalvariable++;
-       
+          pthread_mutex_lock(&mutex);
+          globalvariable++;
+          pthread_mutex_unlock(&mutex);
+          pthread_cond_signal(&cond);
      }
-    pthread_mutex_unlock(&mutex);
-     pthread_cond_signal(&cond);
      pthread_exit((void*) 0);
 }
 // ----------------------------------------------------------
  
 void* printinfo(void* arg) {
      pthread_mutex_lock(&mutex);
-     pthread_cond_wait(&cond, &mutex);
+     while(globalvariable < MAXVAL) {
+          pthread_cond_wait(&cond, &mutex);
+     }
      pthread_mutex_unlock(&mutex);
      printf("%d", globalvariable);
      pthread_exit((void*) 0);
