@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
      pthread_t thread[10];
      int rc = 0, i = 0;
      for (i = 0; i < 10; i++) {
-     	rc = pthread_create(&thread[i], NULL, PrintHello, &i);
+     	rc = pthread_create(&thread[i], NULL, PrintHello, (void *) &i);
 	if (rc) {
           printf("Return code: %d\n", rc);
           exit(-1);
