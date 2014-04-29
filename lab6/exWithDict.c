@@ -8,7 +8,6 @@ int main(void)
 {
 	int pfd1[2], pfd2[2];
 	pid_t pid1, pid2;
-	iont 
 	
 	if (pipe(pfd1) == -1) {
 		perror("Something went wrong with pipe:");
