@@ -6,6 +6,6 @@
 #include "backward.h"
 
 int main(int argc, char ** argv) {
-	backward(argv[1]);
-	return 0;	
+    backward(argv[1]);
+    return 0;
 }

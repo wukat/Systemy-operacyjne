@@ -1,7 +1,7 @@
 /**
  * author wukat
  * cat function
-*/
+ */
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -14,50 +14,47 @@
 #define BUFSIZE 512
 
 void cat(int fdFrom, char * option) {
-	int number = 0;
-	char buf[BUFSIZE];
-	ssize_t nread, nwrite;
-	if (option != NULL && option[0] == '-' && option[1] == 'n')
-		number = 1;
-	while ((nread = read(fdFrom, buf, sizeof(buf))) > 0) {
-		if (number)
-			fprintf(stdout, "%d. ", number++);
-   		if ((nwrite = writeall(STDOUT_FILENO, buf, nread)) == -1) {
-    			perror("Błąd w zapisie");
-    			return;
-    	}
-	}
+    int number = 0;
+    char buf[BUFSIZE];
+    ssize_t nread, nwrite;
+    if (option != NULL && option[0] == '-' && option[1] == 'n')
+        number = 1;
+    while ((nread = read(fdFrom, buf, sizeof (buf))) > 0) {
+        if (number)
+            fprintf(stdout, "%d. ", number++);
+        if ((nwrite = writeall(STDOUT_FILENO, buf, nread)) == -1) {
+            perror("Błąd w zapisie");
+            return;
+        }
+    }
 }
 
 void useCat(char * fileFrom, char * option) {
-	int fromfd = -1;
-	if (fileFrom != NULL) {
-		if ((fromfd = open(fileFrom, O_RDONLY)) != -1) {
-			cat(fromfd, option);
-			close(fromfd);
-		}
-		else {
-			if (errno == ENOENT)
-				printf("Plik %s nie istnieje\n", fileFrom);
-			else if (errno == EACCES)
-				printf("Brak dostępu do pliku %s\n", fileFrom);
-		}
-	}
-	else {
-		cat(0, option);
-	}
+    int fromfd = -1;
+    if (fileFrom != NULL) {
+        if ((fromfd = open(fileFrom, O_RDONLY)) != -1) {
+            cat(fromfd, option);
+            close(fromfd);
+        } else {
+            if (errno == ENOENT)
+                printf("Plik %s nie istnieje\n", fileFrom);
+            else if (errno == EACCES)
+                printf("Brak dostępu do pliku %s\n", fileFrom);
+        }
+    } else {
+        cat(0, option);
+    }
 }
 
 int main(int argc, char **argv) {
-	if (argc == 1) {
-		cat(0, NULL);
-	}
-	else {
-		int i = 1;
-		for (i = 1; i < argc; i++) {
-			useCat(argv[i], NULL); /*place for option*/
-		}
-	}
-	
-	return 0;
+    if (argc == 1) {
+        cat(0, NULL);
+    } else {
+        int i = 1;
+        for (i = 1; i < argc; i++) {
+            useCat(argv[i], NULL); /*place for option*/
+        }
+    }
+
+    return 0;
 }

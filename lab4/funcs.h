@@ -21,13 +21,14 @@
 #define MAXCMD 4096
 #define RESERROR 0
 #define RESSUCCESS 1
+
 /* -------------------------------------------------------------------------------------- */
 
 struct cmdlist {
-	char** argv; /* The command argv[0] and list of its arguments argv[1...argc-1]  */
-	int argc; /* The numer of elements in the argv array  */
-	int conjuction; /* Indicates which operator (|| or &&) was used before this command */
-	struct cmdlist* next; /* Pioter to the next command. NULL denotes the last element.  */
+    char** argv; /* The command argv[0] and list of its arguments argv[1...argc-1]  */
+    int argc; /* The numer of elements in the argv array  */
+    int conjuction; /* Indicates which operator (|| or &&) was used before this command */
+    struct cmdlist* next; /* Pioter to the next command. NULL denotes the last element.  */
 };
 /* -------------------------------------------------------------------------------------- */
 
@@ -64,13 +65,14 @@ void dealocate(struct cmdlist* __head);
 #define MAXCMD 4096
 #define RESERROR 0
 #define RESSUCCESS 1
+
 /* -------------------------------------------------------------------------------------- */
 
 struct cmdlist {
-	char** argv; /* The command argv[0] and list of its arguments argv[1...argc-1]  */
-	int argc; /* The numer of elements in the argv array  */
-	int conjuction; /* Indicates which operator (|| or &&) was used before this command */
-	struct cmdlist* next; /* Pioter to the next command. NULL denotes the last element.  */
+    char** argv; /* The command argv[0] and list of its arguments argv[1...argc-1]  */
+    int argc; /* The numer of elements in the argv array  */
+    int conjuction; /* Indicates which operator (|| or &&) was used before this command */
+    struct cmdlist* next; /* Pioter to the next command. NULL denotes the last element.  */
 };
 /* -------------------------------------------------------------------------------------- */
 
