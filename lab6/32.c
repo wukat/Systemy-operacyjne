@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
                     read(pfd1[0], buf1, 100);
                     for (i = 0; i < 20; i += 2) {
                         buf3[0] = buf1[i];
-                        buf3[1] = buf1[i+1];
+                        buf3[1] = buf1[i + 1];
                         put = snprintf(buf4, 20, "%d\n", atoi(buf3) * 5);
                         if (i == 18) {
                             buf3[put++] = '\0';
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
                     waitpid(pid2, NULL, 0);
                     while ((nread = read(pfd2[0], buf2, 100)) > 0) {
                         write(STDOUT_FILENO, buf2, nread);
-                    }         
+                    }
                     break;
             }
     }

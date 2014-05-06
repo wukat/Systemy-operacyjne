@@ -57,8 +57,7 @@ void useEncode(char * fileFrom, char * fileTo) {
         if ((tofd = open(fileTo, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND)) != -1) {
             encode(fromfd, tofd);
             close(tofd);
-        }
-        else {
+        } else {
             if (errno == ENOENT)
                 printf("File %s doesn't exist\n", fileTo);
             else if (errno == EACCES)
