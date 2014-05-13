@@ -122,8 +122,6 @@ int main(void) {
     /* Cleaning up */
     unlink(svsrvname);
     msgctl(svsrvqid, IPC_RMID, NULL);
-    if (msg.clientid != -1)
-        msgctl(msg.clientid, IPC_RMID, NULL);
 
     return 0;
 }
